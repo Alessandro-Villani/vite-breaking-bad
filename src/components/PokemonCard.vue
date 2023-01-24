@@ -13,16 +13,18 @@ export default {
     computed: {
         currentPokemon() {
             return store.pokemons.find(pokemon => pokemon._id === this.id);
-        }
-    }
+        },
+    },
 }
 </script>
 
 <template>
-    <div class="col d-flex align-items-center justify-content-center mb-2">
-        <div class="card d-flex flex-column align-items-center p-3 w-100">
+    <div class="col d-flex align-items-center justify-content-center mb-3">
+        <div class="card d-flex flex-column align-items-center p-3 w-100" :class="currentPokemon.type1.toLowerCase()">
             <h4 class="mb-4">{{ currentPokemon.name }}</h4>
-            <img class="mb-3" :src="currentPokemon.imageUrl" :alt="currentPokemon.name">
+            <figure class="d-flex justify-content-center align-items-center">
+                <img class="mb-3" :src="currentPokemon.imageUrl" :alt="currentPokemon.name">
+            </figure>
             <div class="type row">
                 <h6 class="col-12 text-center my-2">TYPE</h6>
                 <div v-if="currentPokemon.type1" class="col-6 text-center px-0"> {{ currentPokemon.type1 }}</div>
@@ -49,9 +51,17 @@ export default {
 </template>
 
 <style scoped lang="scss">
-img {
-    height: 100px;
-    width: auto;
+@use '../assets/styles/partials/variables' as *;
+
+figure {
+    height: 150px;
+    width: 150px;
+    background-color: white;
+    border-radius: 50%;
+
+    img {
+        width: 60%;
+    }
 }
 
 .col-4,
@@ -61,5 +71,17 @@ img {
 
 .col-4 {
     font-weight: bold;
+}
+
+.grass {
+    background-color: $grass;
+}
+
+.fire {
+    background-color: $fire;
+}
+
+.water {
+    background-color: $water;
 }
 </style>
