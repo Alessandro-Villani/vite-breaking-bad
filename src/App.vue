@@ -7,8 +7,14 @@ import { store } from './data/store'
 export default {
   data() {
     return {
-      store
+      store,
+      pages: 10
     };
+  },
+  computed: {
+    pokemonNumber() {
+      return this.pages * 10;
+    }
   },
   methods: {
     fetchPokemons(start, pages) {
@@ -30,7 +36,7 @@ export default {
     }
   },
   created() {
-    this.fetchPokemons(1, 10);
+    this.fetchPokemons(1, this.pages);
   },
   components: { PokemonCard, AppLoader }
 }
@@ -40,7 +46,7 @@ export default {
   <main>
     <div class="container d-flex flex-column align-items-center py-3">
       <img class="img-fluid mb-3" src="./assets/img/pokemon-logo.png" alt="">
-      <div v-if="!store.isLoading" class="pokedex row row-cols-5 p-5 rounded-2">
+      <div v-if="pokemonNumber === store.pokemons.length" class="pokedex row row-cols-5 p-5 rounded-2">
         <PokemonCard v-for="pokemon in store.pokemons" :key="pokemon._id" :id="pokemon._id"></PokemonCard>
       </div>
       <AppLoader v-else />

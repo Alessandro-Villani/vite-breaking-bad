@@ -98,7 +98,8 @@ export default {
 
         img {
             display: block;
-            width: 60%;
+            max-width: 60%;
+            max-height: 60%;
         }
     }
 
