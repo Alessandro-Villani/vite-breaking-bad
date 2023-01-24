@@ -25,8 +25,8 @@ export default {
             <img class="mb-3" :src="currentPokemon.imageUrl" :alt="currentPokemon.name">
             <div class="type row">
                 <h6 class="col-12 text-center my-2">TYPE</h6>
-                <div v-if="currentPokemon.type1" class="col-6 text-center"> {{ currentPokemon.type1 }}</div>
-                <div v-if="currentPokemon.type2" class="col-6 text-center"> {{ currentPokemon.type2 }}</div>
+                <div v-if="currentPokemon.type1" class="col-6 text-center px-0"> {{ currentPokemon.type1 }}</div>
+                <div v-if="currentPokemon.type2" class="col-6 text-center px-0"> {{ currentPokemon.type2 }}</div>
             </div>
             <div class="attributes row">
                 <h6 class="col-12 text-center my-2">ATTRIBUTES</h6>
