@@ -11,18 +11,26 @@ export default {
     };
   },
   methods: {
-    fetchPokemons() {
+    fetchPokemons(start, pages) {
       store.isLoading = true;
-      axios.get("https://41tyokboji.execute-api.eu-central-1.amazonaws.com/dev/api/v1/pokemons?per=10&page=1")
+      const url = `https://41tyokboji.execute-api.eu-central-1.amazonaws.com/dev/api/v1/pokemons?per=10&page=${start}`
+      axios.get(url)
         .then(res => {
-          store.pokemons = res.data.docs;
+          store.pokemons.push(...res.data.docs);
+          console.log(start, pages);
+          if (start < pages) {
+            start++;
+            console.log(start, pages);
+            this.fetchPokemons(start, pages);
+          }
         }).catch(error => { }).then(() => {
           store.isLoading = false;
         });
+
     }
   },
   created() {
-    this.fetchPokemons();
+    this.fetchPokemons(1, 10);
   },
   components: { PokemonCard, AppLoader }
 }
@@ -32,7 +40,7 @@ export default {
   <main>
     <div class="container d-flex flex-column align-items-center py-3">
       <img class="img-fluid mb-3" src="./assets/img/pokemon-logo.png" alt="">
-      <div v-if="!store.isLoading" class="pokedex row row-cols-5 py-5">
+      <div v-if="!store.isLoading" class="pokedex row row-cols-5 p-5 rounded-2">
         <PokemonCard v-for="pokemon in store.pokemons" :key="pokemon._id" :id="pokemon._id"></PokemonCard>
       </div>
       <AppLoader v-else />

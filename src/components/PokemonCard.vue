@@ -1,5 +1,6 @@
 <script>
 import { store } from '../data/store'
+import axios from 'axios'
 
 export default {
     data() {
@@ -14,21 +15,45 @@ export default {
         currentPokemon() {
             return store.pokemons.find(pokemon => pokemon._id === this.id);
         },
+        getColor1() {
+            return this.currentPokemon.type1 ? `--${this.currentPokemon.type1.toLowerCase()}` : '--transparent';
+        },
+        getColor2() {
+            return this.currentPokemon.type2 ? `--${this.currentPokemon.type2.toLowerCase()}` : '--transparent';
+        }
     },
 }
 </script>
 
 <template>
     <div class="col d-flex align-items-center justify-content-center mb-3">
-        <div class="card d-flex flex-column align-items-center p-3 w-100" :class="currentPokemon.type1.toLowerCase()">
-            <h4 class="mb-4">{{ currentPokemon.name }}</h4>
+        <div class="card d-flex flex-column align-items-center p-3 w-100"
+            :style="{ 'background-image': `linear-gradient(135deg, var(${getColor1}), var(${getColor2}))` }">
+            <p class="number">{{ currentPokemon.number }}</p>
+            <h5 class="mb-5">{{ currentPokemon.name }}</h5>
             <figure class="d-flex justify-content-center align-items-center">
-                <img class="mb-3" :src="currentPokemon.imageUrl" :alt="currentPokemon.name">
+                <img :src="currentPokemon.imageUrl" :alt="currentPokemon.name"
+                    @error="(e) => e.target.src = '/pokeball.png'">
             </figure>
             <div class="type row">
                 <h6 class="col-12 text-center my-2">TYPE</h6>
-                <div v-if="currentPokemon.type1" class="col-6 text-center px-0"> {{ currentPokemon.type1 }}</div>
-                <div v-if="currentPokemon.type2" class="col-6 text-center px-0"> {{ currentPokemon.type2 }}</div>
+                <div v-if="currentPokemon.type2" class="double-type d-flex">
+                    <div class="col-6 text-center">
+                        <div class="rounded-pill" :style="{ 'background-color': `var(${getColor1})` }"><b>{{
+                            currentPokemon.type1
+                        }}</b></div>
+                    </div>
+                    <div class="col-6 text-center">
+                        <div class="rounded-pill" :style="{ 'background-color': `var(${getColor2})` }"><b>{{
+                            currentPokemon.type2
+                        }}</b></div>
+                    </div>
+                </div>
+                <div v-else class="single-type col-12 text-center">
+                    <div class="rounded-pill" :style="{ 'background-color': `var(${getColor1})` }"> <b>{{
+                        currentPokemon.type1
+                    }}</b></div>
+                </div>
             </div>
             <div class="attributes row">
                 <h6 class="col-12 text-center my-2">ATTRIBUTES</h6>
@@ -44,7 +69,7 @@ export default {
                 <div class="col-2 px-0">{{ currentPokemon.sp_def }}</div>
                 <div class="col-4">SPD:</div>
                 <div class="col-2 px-0">{{ currentPokemon.spd }}</div>
-                <div class="col-12 text-center mt-2">TOTAL: {{ currentPokemon.total }}</div>
+                <div class="col-12 text-center mt-2"><b>TOTAL:</b> {{ currentPokemon.total }}</div>
             </div>
         </div>
     </div>
@@ -53,15 +78,42 @@ export default {
 <style scoped lang="scss">
 @use '../assets/styles/partials/variables' as *;
 
-figure {
-    height: 150px;
-    width: 150px;
-    background-color: white;
-    border-radius: 50%;
+.card {
+    cursor: pointer;
+    text-shadow: 2px gray;
+    box-shadow: 0 0 5px black;
+    transition: all 0.5s;
+    position: relative;
 
-    img {
-        width: 60%;
+    &:hover {
+        scale: 1.1;
+        z-index: 1;
     }
+
+    figure {
+        height: 150px;
+        width: 150px;
+        background-color: white;
+        border-radius: 50%;
+
+        img {
+            display: block;
+            width: 60%;
+        }
+    }
+
+    .rounded-pill {
+        color: white;
+    }
+
+    .number {
+        position: absolute;
+        top: 0;
+        left: 0;
+        padding: .5rem;
+    }
+
+
 }
 
 .col-4,
@@ -71,17 +123,5 @@ figure {
 
 .col-4 {
     font-weight: bold;
-}
-
-.grass {
-    background-color: $grass;
-}
-
-.fire {
-    background-color: $fire;
-}
-
-.water {
-    background-color: $water;
 }
 </style>
