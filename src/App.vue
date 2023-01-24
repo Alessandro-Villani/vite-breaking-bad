@@ -32,8 +32,8 @@ export default {
   <main>
     <div class="container d-flex flex-column align-items-center py-3">
       <img class="img-fluid mb-3" src="./assets/img/pokemon-logo.png" alt="">
-      <div class="pokedex row row-cols-5">
-        <PokemonCard v-for="pokemon in store.pokemons"></PokemonCard>
+      <div class="pokedex row row-cols-5 py-5">
+        <PokemonCard v-for="pokemon in store.pokemons" :key="pokemon._id" :id="pokemon._id"></PokemonCard>
       </div>
     </div>
   </main>

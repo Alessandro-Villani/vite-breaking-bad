@@ -1,6 +1,6 @@
 import { reactive } from 'vue'
 
-export const store = {
+export const store = reactive({
     pokemons: [],
     isLoading: false
-}
+})
